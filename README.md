@@ -1,6 +1,6 @@
 COLMAP
 ======
-
+An customized version of colmap, with visual id tracking function.
 About
 -----
 
