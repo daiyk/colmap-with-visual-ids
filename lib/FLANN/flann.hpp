@@ -101,7 +101,7 @@ public:
     Index(const Matrix<ElementType>& features, const IndexParams& params, Distance distance = Distance() )
         : index_params_(params)
     {
-        flann_algorithm_t index_type = get_param<flann_algorithm_t>(params,"algorithm");
+        flann_algorithm_t index_type = get_param<flann_algorithm_t>(params,"algorithm"); //get algorithm types: which defined in flann_algorithm_t
         loaded_ = false;
 
         if (index_type == FLANN_INDEX_SAVED) {
@@ -110,7 +110,7 @@ public:
         }
         else {
         	flann_algorithm_t index_type = get_param<flann_algorithm_t>(params, "algorithm");
-            nnIndex_ = create_index_by_type<Distance>(index_type, features, params, distance);
+            nnIndex_ = create_index_by_type<Distance>(index_type, features, params, distance); //distance types defined in dist.h
         }
     }
 

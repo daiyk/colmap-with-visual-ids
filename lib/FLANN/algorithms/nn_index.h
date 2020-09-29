@@ -315,8 +315,8 @@ public:
     	assert(dists.cols >= knn);
     	bool use_heap;
 
-    	if (params.use_heap==FLANN_Undefined) {
-    		use_heap = (knn>KNN_HEAP_THRESHOLD)?true:false;
+    	if (params.use_heap==FLANN_Undefined) { //default flann_undefined
+    		use_heap = (knn>KNN_HEAP_THRESHOLD)?true:false; //knn = 2 default thus use_heap=false
     	}
     	else {
     		use_heap = (params.use_heap==FLANN_True)?true:false;
@@ -348,7 +348,7 @@ public:
     				findNeighbors(resultSet, queries[i], params);
     				size_t n = std::min(resultSet.size(), knn);
     				resultSet.copy(indices[i], dists[i], n, params.sorted);
-    				indices_to_ids(indices[i], indices[i], n);
+    				indices_to_ids(indices[i], indices[i], n); //transform capacity =2 resultset to continues indices
     				count += n;
     			}
     		}
@@ -356,7 +356,7 @@ public:
     	return count;
     }
 
-    /**
+    /** //transform Matrix<int> indices to Matrix<size_t> then call the last function
      *
      * @param queries
      * @param indices

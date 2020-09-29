@@ -229,7 +229,7 @@ void FindBestMatchesOneWayFLANN(
   flann::Matrix<float> distances_matrix(distances_vector.data(), query.rows(),
                                         kNumNearestNeighbors);
   flann::Index<flann::L2<uint8_t>> index(
-      database_matrix, flann::KDTreeIndexParams(kNumTreesInForest));
+      database_matrix, flann::KDTreeIndexParams(kNumTreesInForest)); //flann::KDTreeIndexParam defines "algorithmn" and "tree" parameters
   index.buildIndex();
   index.knnSearch(query_matrix, indices_matrix, distances_matrix,
                   kNumNearestNeighbors, flann::SearchParams(128));
@@ -303,7 +303,7 @@ size_t FindBestMatchesOneWayFLANN(
 
   return num_matches;
 }
-
+// find the matches by FLANN ratio test
 void FindBestMatchesFLANN(
     const Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>&
         indices_1to2,
@@ -319,7 +319,7 @@ void FindBestMatchesFLANN(
 
   std::vector<int> matches12;
   const size_t num_matches12 = FindBestMatchesOneWayFLANN(
-      indices_1to2, distances_1to2, max_ratio, max_distance, &matches12);
+      indices_1to2, distances_1to2, max_ratio, max_distance, &matches12); //doing FLANN ration test, except larger distance is better
 
   if (cross_check && indices_2to1.rows()) {
     std::vector<int> matches21;
@@ -625,7 +625,7 @@ bool ExtractCovariantSiftFeaturesCPU(const SiftExtractionOptions& options,
 
   const int num_features = vl_covdet_get_num_features(covdet.get());
   VlCovDetFeature* features = vl_covdet_get_features(covdet.get());
-
+  
   // Sort features according to detected octave and scale.
   std::sort(
       features, features + num_features,
@@ -990,7 +990,7 @@ void MatchSiftFeaturesCPUFLANN(const SiftMatchingOptions& match_options,
       distances_2to1;
 
   FindBestMatchesOneWayFLANN(descriptors1, descriptors2, &indices_1to2,
-                             &distances_1to2);
+                             &distances_1to2); //this function find the nearest indices in descript2 then assign to indices_1to2
   if (match_options.cross_check) {
     FindBestMatchesOneWayFLANN(descriptors2, descriptors1, &indices_2to1,
                                &distances_2to1);

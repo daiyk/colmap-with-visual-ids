@@ -106,7 +106,8 @@ public:
     {
         trees_ = get_param(index_params_,"trees",4);
 
-        setDataset(dataset);
+        setDataset(dataset); //size_ = dataset.rows veclen_ = dataset.cols; and set point_ vector to be container of dataset(each descript)
+    	
     }
 
     KDTreeIndex(const KDTreeIndex& other) : BaseClass(other),
@@ -258,14 +259,14 @@ protected:
             ind[i] = int(i);
         }
 
-        mean_ = new DistanceType[veclen_];
-        var_ = new DistanceType[veclen_];
+        mean_ = new DistanceType[veclen_]; //veclen=cols=descriptor dimension=128
+        var_ = new DistanceType[veclen_]; //veclen=cols=descriptor dimension=128, DistanceType = Accumulator<EleType>::Type = EleType
 
-        tree_roots_.resize(trees_);
+        tree_roots_.resize(trees_); //resize the tree to given number of trees = 4
         /* Construct the randomized trees. */
         for (int i = 0; i < trees_; i++) {
             /* Randomize the order of vectors to allow for unbiased sampling. */
-            std::random_shuffle(ind.begin(), ind.end());
+            std::random_shuffle(ind.begin(), ind.end()); //random sampling ind for random indexing
             tree_roots_[i] = divideTree(&ind[0], int(size_) );
         }
         delete[] mean_;

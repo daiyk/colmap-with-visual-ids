@@ -144,7 +144,7 @@ inline NNIndex<Distance>*
   create_index_by_type(const flann_algorithm_t index_type,
 		const Matrix<typename Distance::ElementType>& dataset, const IndexParams& params, const Distance& distance)
 {
-	typedef typename Distance::ElementType ElementType;
+	typedef typename Distance::ElementType ElementType; //index dataset element type
 
 	NNIndex<Distance>* nnIndex;
 
