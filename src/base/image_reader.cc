@@ -216,6 +216,9 @@ ImageReader::Status ImageReader::Next(Camera* camera, Image* image,
       if (!options_.query_image) {
           prev_camera_.SetCameraId(database_->WriteCamera(prev_camera_));
       }
+      else {
+          prev_camera_.SetCameraId(kInvalidCameraId-1);
+      }
     }
 
     image->SetCameraId(prev_camera_.CameraId());

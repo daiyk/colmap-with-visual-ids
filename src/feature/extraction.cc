@@ -365,9 +365,11 @@ void SiftFeatureSimpleExtractor::Run() {
 
         if (image_data.status != ImageReader::Status::SUCCESS) {
             if (image_data.status == ImageReader::Status::IMAGE_EXISTS) {
-                auto imageId = database_.ReadImageWithName(image_data.image.Name()).ImageId();
+                auto imageData = database_.ReadImageWithName(image_data.image.Name());
+                auto imageId = imageData.ImageId();
                 image_data.descriptors = database_.ReadDescriptors(imageId);
                 image_data.keypoints = database_.ReadKeypoints(imageId);
+                image_data.camera = database_.ReadCamera(imageData.CameraId());
             }
             else {
                 image_data.bitmap.Deallocate();
@@ -746,7 +748,7 @@ void FeatureObjectWriterThread::Run() {
                 std::cout << "  ERROR: Failed to extract features." << std::endl;
             }
 
-            if (image_data.status != ImageReader::Status::SUCCESS) {
+            if (image_data.status != ImageReader::Status::SUCCESS && image_data.status != ImageReader::Status::IMAGE_EXISTS) {
                 continue;
             }
 
