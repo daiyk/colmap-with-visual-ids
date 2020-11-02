@@ -31,7 +31,6 @@
 
 #ifndef COLMAP_SRC_FEATURE_EXTRACTION_H_
 #define COLMAP_SRC_FEATURE_EXTRACTION_H_
-
 #include "base/database.h"
 #include "base/image_reader.h"
 #include "feature/sift.h"
@@ -43,6 +42,7 @@ namespace colmap {
 namespace internal {
 
 struct ImageData;
+class FeatureObjectWriterThread;
 
 }  // namespace internal
 
@@ -70,6 +70,30 @@ class SiftFeatureExtractor : public Thread {
   std::unique_ptr<JobQueue<internal::ImageData>> writer_queue_;
 };
 
+//simple SiftFeature extractor that extract features to internal objects instead of writing to database
+class SiftFeatureSimpleExtractor : public Thread {
+public:
+    SiftFeatureSimpleExtractor(const ImageReaderOptions& reader_options,
+        const SiftExtractionOptions& sift_options);
+    internal::FeatureObjectWriterThread* getResult();
+    ~SiftFeatureSimpleExtractor();
+private:
+    void Run();
+
+    const ImageReaderOptions reader_options_;
+    const SiftExtractionOptions sift_options_;
+
+    Database database_;
+    ImageReader image_reader_;
+
+    std::vector<std::unique_ptr<Thread>> resizers_;
+    std::vector<std::unique_ptr<Thread>> extractors_;
+    std::unique_ptr<internal::FeatureObjectWriterThread> writer_;
+
+    std::unique_ptr<JobQueue<internal::ImageData>> resizer_queue_;
+    std::unique_ptr<JobQueue<internal::ImageData>> extractor_queue_;
+    std::unique_ptr<JobQueue<internal::ImageData>> writer_queue_;
+};
 // Import features from text files. Each image must have a corresponding text
 // file with the same name and an additional ".txt" suffix.
 class FeatureImporter : public Thread {
@@ -147,7 +171,20 @@ class FeatureWriterThread : public Thread {
   Database* database_;
   JobQueue<ImageData>* input_queue_;
 };
+class FeatureObjectWriterThread : public Thread {
+public:
+    FeatureObjectWriterThread(const size_t num_images, Database* database,
+        JobQueue<ImageData>* input_queue);
+    std::vector<std::shared_ptr<FeatureDescriptors>> query_descriptors;
+    //std::vector<FeatureKeypoints> query_keypoints;
+private:
+    void Run();
 
+    const size_t num_images_;
+    Database* database_;
+    JobQueue<ImageData>* input_queue_;
+
+};
 }  // namespace internal
 
 }  // namespace colmap

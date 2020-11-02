@@ -518,6 +518,7 @@ struct HammingPopcnt
         }
 #else
         HammingLUT lut;
+        typedef unsigned long long pop_t;
         result = lut(reinterpret_cast<const unsigned char*> (a),
                      reinterpret_cast<const unsigned char*> (b), size * sizeof(pop_t));
 #endif

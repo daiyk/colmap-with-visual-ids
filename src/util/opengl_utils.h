@@ -31,7 +31,6 @@
 
 #ifndef COLMAP_SRC_OPENGL_UTILS_H_
 #define COLMAP_SRC_OPENGL_UTILS_H_
-
 #include <QAction>
 #include <QOffscreenSurface>
 #include <QOpenGLContext>

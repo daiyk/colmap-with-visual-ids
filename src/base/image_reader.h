@@ -87,6 +87,9 @@ struct ImageReaderOptions {
   // intensity value 0 in grayscale).
   std::string camera_mask_path = "";
 
+  //custom option that disable database transaction when set camera parameters
+  bool query_image = false;
+
   bool Check() const;
 };
 

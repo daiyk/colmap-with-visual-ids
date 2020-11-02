@@ -34,6 +34,8 @@ set(FOLDER_NAME "exe")
 if(IS_MSVC)
     add_compile_options("/bigobj")
 endif()
-
+COLMAP_ADD_SOURCES(
+    colmap_util.h colmap_util.cc
+)
 COLMAP_ADD_EXECUTABLE(colmap_exe colmap.cc)
 set_target_properties(colmap_exe PROPERTIES OUTPUT_NAME colmap)

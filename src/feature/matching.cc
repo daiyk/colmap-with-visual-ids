@@ -1151,6 +1151,8 @@ void VocabTreeFeatureMatcher::Run() {
    //write visual ids to database
   std::unordered_map<image_t, FeatureVisualids> ids;
   ids.reserve(all_image_ids.size());
+    
+  //write visual index to database
   InvertedIndexToVisualWords(&visual_index, &cache_, all_image_ids, ids);
   for (auto image_id : cache_.GetImageIds()) {
       if (cache_.ExistsVisualIDs(image_id)) {

@@ -543,7 +543,6 @@ int RunFeatureExtractor(int argc, char** argv) {
     feature_extractor.Start();
     feature_extractor.Wait();
   }
-
   return EXIT_SUCCESS;
 }
 
