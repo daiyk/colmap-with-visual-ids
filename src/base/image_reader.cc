@@ -114,7 +114,7 @@ ImageReader::Status ImageReader::Next(Camera* camera, Image* image,
 
   const bool exists_image = database_->ExistsImageWithName(image->Name());
 
-  if (exists_image) {
+  if (exists_image && !options_.force_extraction) {
     *image = database_->ReadImageWithName(image->Name());
     const bool exists_keypoints = database_->ExistsKeypoints(image->ImageId());
     const bool exists_descriptors =
@@ -151,7 +151,7 @@ ImageReader::Status ImageReader::Next(Camera* camera, Image* image,
   // Check for well-formed data.
   //////////////////////////////////////////////////////////////////////////////
 
-  if (exists_image) {
+  if (exists_image && !options_.force_extraction) {
     const Camera current_camera = database_->ReadCamera(image->CameraId());
 
     if (options_.single_camera && prev_camera_.CameraId() != kInvalidCameraId &&

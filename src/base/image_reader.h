@@ -90,6 +90,9 @@ struct ImageReaderOptions {
   //custom option that disable database transaction when set camera parameters
   bool query_image = false;
 
+  //ignore the existed database data and force the extraction
+  bool force_extraction = false;
+
   bool Check() const;
 };
 

@@ -789,55 +789,5 @@ void FeatureObjectWriterThread::Run() {
     }
 }
 
-//int RunSimpleFeatureExtractor(int argc, char** argv, std::vector<FeatureDescriptors>& query) {
-//    #ifdef CUDA_ENABLED
-//        const bool kUseOpenGL = false;
-//    #else
-//        const bool kUseOpenGL = true;
-//    #endif
-//    std::string image_list_path;
-//
-//    colmap::OptionManager options;
-//    options.AddDatabaseOptions();
-//    options.AddImageOptions();
-//    options.AddDefaultOption("image_list_path", &image_list_path);
-//    options.AddExtractionOptions();
-//    options.Parse(argc, argv);
-//
-//    colmap::ImageReaderOptions reader_options = *options.image_reader;
-//    reader_options.database_path = *options.database_path;
-//    reader_options.image_path = *options.image_path;
-//
-//    if (!image_list_path.empty()) {
-//        reader_options.image_list = colmap::ReadTextFileLines(image_list_path);
-//        if (reader_options.image_list.empty()) {
-//            return EXIT_SUCCESS;
-//        }
-//    }
-//
-//    if (!ExistsCameraModelWithName(options.image_reader->camera_model)) {
-//        std::cerr << "ERROR: Camera model does not exist" << std::endl;
-//    }
-//
-//    std::unique_ptr<QApplication> app;
-//    if (options.sift_extraction->use_gpu && kUseOpenGL) {
-//        app.reset(new QApplication(argc, argv));
-//    }
-//
-//    colmap::SiftFeatureSimpleExtractor feature_extractor(reader_options,
-//        *options.sift_extraction);
-//
-//    if (options.sift_extraction->use_gpu && kUseOpenGL) {
-//        RunThreadWithOpenGLContext(&feature_extractor);
-//    }
-//    else {
-//        feature_extractor.Start();
-//        feature_extractor.Wait();
-//    }
-//
-//    query = feature_extractor.getResult();
-//    return EXIT_SUCCESS;
-//}
-
 }  // namespace internal
 }  // namespace colmap

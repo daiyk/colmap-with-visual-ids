@@ -31,6 +31,9 @@ namespace colmap {
 
         //custom option that disable database transaction when set camera parameters
         reader_options.query_image = true;
+
+        //force extraction, ignore database existed image
+        reader_options.force_extraction = true;
         reader_options.database_path = *options.database_path;
         reader_options.image_path = *options.image_path;
 
